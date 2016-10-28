@@ -23,3 +23,18 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
     ```
 
   
+  ```elixir
+    defmodule MyChannel do
+      use Conejo.Channel
+  
+      def consume(channel, tag, redelivered, payload) do
+        IO.puts("Receiving: #{inspect payload}")
+      end
+  
+      def handle_data_and_publish(channel, data) do
+        IO.puts("Publishing: #{inspect data}")
+      end
+      
+    end
+    
+  ```
