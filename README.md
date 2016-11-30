@@ -1,10 +1,12 @@
 # Conejo
 
-Conejo is a library based on pma/amqp which will help you to defined your
+Conejo is a library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to defined your
 publisher and consumers in an easier way.
 
 Currenlty, only TopicConsumers are supported by default, although you could 
 create your own consumers using the behaviour Conejo.Channel.
+
+I highly recommend to initiate you publishers/consumers under a Supervisor.
 
 ## Installation
 
@@ -26,27 +28,27 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
     end
     ```
     
-   3. Define your config files. Try to respect this configuration. It is based
+  3. Define your config files. Try to respect this configuration. It is based
    on the options that are needed by pma/amqp.
    
-     ```elixir
-     config :my_application, :consumer,
-       exchange: "my_exchange",
-       exchange_type: "topic",
-       queue_name: "my_queue",
-       queue_declaration_options: [{:auto_delete, true}, {:exclusive, true}],
-       queue_bind_options: [routing_key: "example"],
-       consume_options: [no_ack: true]
+   ```elixir
+   config :my_application, :consumer,
+     exchange: "my_exchange",
+     exchange_type: "topic",
+     queue_name: "my_queue",
+     queue_declaration_options: [{:auto_delete, true}, {:exclusive, true}],
+     queue_bind_options: [routing_key: "example"],
+     consume_options: [no_ack: true]
 
 
-     config :conejo, 
-       host: "my_host",
-       port: 5672,
-       username: "user",
-       password: "pass"
-     ```
+   config :conejo, 
+     host: "my_host",
+     port: 5672,
+     username: "user",
+     password: "pass"
+   ```
    
-   4. Define and run your Consumers. Code the function consume(channel, tag, redelivered, payload)
+  4. Define and run your Consumers. Code the function consume(channel, tag, redelivered, payload)
    which will be executed when a message is received.
      
   ```elixir
@@ -62,7 +64,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   {:ok, consumer} = MyApplication.MyConsumer.start_link(options, [name: :consumer])
   ```
   
-   4. Define and run your Publisher.
+  5. Define and run your Publisher.
      
   ```elixir
   defmodule MyApplication.MyPublisher do
@@ -71,4 +73,12 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   end
      
   {:ok, publisher} = MyApplication.MyPublisher.start_link([], [name: :publisher])
+  
+  #Synchronous
+  MyApplication.MyPublisher.sync_publish(:publisher, "my_exchange", "example", "Hola")
+  
+  #Asynchronous
+  MyApplication.MyPublisher.async_publish(:publisher, "my_exchange", "example", "Adios")
   ```
+  
+  

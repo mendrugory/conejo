@@ -78,8 +78,14 @@ defmodule Conejo.Channel do
         {:noreply, chan}
       end
 
-      def handle_info({:EXIT, pid, :shutdown}, state) do
-        {:noreply, state}
+      def handle_info({:EXIT, pid, :shutdown}, _state) do
+        Logger.info("Conejo Connection has died (:EXIT), therefore I have to die as well.")
+        Process.exit(self(), :kill)
+      end
+
+      def handle_info({:DOWN, _, :process, _pid, reason}, state) do
+        Logger.info("Conejo Connection has died (:DOWN), therefore I have to die as well. Reason: #{inspect reason}")
+        Process.exit(self(), :kill)
       end
 
       def handle_info(msg, state) do
@@ -90,7 +96,7 @@ defmodule Conejo.Channel do
         try do
           {:ok, conn} = Conejo.Connection.get_connection()
           {:ok, chan} = AMQP.Channel.open(conn)
-          :conejo_connection |> :erlang.whereis |> Process.link()
+          Process.monitor(:conejo_connection)
           Process.link(Map.get(chan, :pid))
           queue = options[:queue_name]
           declare_exchange(chan, Map.get(options, :exchange, "exchange"), Map.get(options, :exchange_type, "topic"))
