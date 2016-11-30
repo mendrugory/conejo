@@ -17,6 +17,6 @@ defmodule Conejo.Mixfile do
 
   defp deps do
     [{:amqp_client, git: "https://github.com/mendrugory/amqp_client.git", branch: "erlang_otp_19", override: true},
-    {:amqp, "~> 0.1.4"}]
+    {:amqp, "~> 0.1.5"}]
   end
 end

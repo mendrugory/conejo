@@ -23,15 +23,7 @@ defmodule Conejo.Connection do
   It returns the pid of the rabbitmq connection
   """
   def get_connection() do
-    Logger.info("Asking for the connection ...")
     GenServer.call(@name, :get_connection)
-  end
-
-  @doc """
-  It monitors the connection
-  """
-  def monitor() do
-    Process.monitor(@name)
   end
 
   defp create_url do
@@ -58,13 +50,12 @@ defmodule Conejo.Connection do
     end
   end
 
-  def handle_info({:DOWN, _, :process, _pid, _reason}, _state) do
-    # If the connection dies, the connection manager is killed in order to reconnect and "warns" the channels
-    Process.exit(self(), :kill)
-  end
-
   def handle_call(:get_connection, _from, state) do
     {:reply, state, state}
+  end
+
+  def handle_info(_msg, state) do
+    {:noreply, state}
   end
 
 end
