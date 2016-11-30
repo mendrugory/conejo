@@ -1,10 +1,10 @@
 # Conejo
 
-Conejo is a library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to defined your
+Conejo is a library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to define your
 publisher and consumers in an easier way.
 
-Currenlty, only TopicConsumers are supported by default, although you could 
-create your own consumers using the behaviour Conejo.Channel.
+Currently, only TopicConsumers are supported, although you could 
+create your own consumers using the behaviour [Conejo.Channel](https://github.com/mendrugory/conejo/blob/master/lib/conejo/channel.ex).
 
 I highly recommend to initiate you publishers/consumers under a Supervisor.
 
@@ -29,7 +29,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
     ```
     
   3. Define your config files. Try to respect this configuration. It is based
-   on the options that are needed by pma/amqp.
+   on the options that are needed by [pma/amqp](https://github.com/pma/amqp/).
    
    ```elixir
    config :my_application, :consumer,
