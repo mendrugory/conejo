@@ -1,7 +1,7 @@
 # Conejo
 
 Conejo is a library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to define your
-publisher and consumers in an easier way.
+publishers and consumers in an easier way.
 
 I highly recommend to initiate your publishers/consumers under a Supervisor.
 
