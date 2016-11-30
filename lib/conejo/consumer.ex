@@ -1,8 +1,8 @@
-defmodule Conejo.TopicConsumer do
+defmodule Conejo.Consumer do
 
 
   @moduledoc """
-  Conejo.TopicChannel is the behaviour which will help you to implement your own RabbitMQ Topic Consumers.
+  Conejo.Consumer is the behaviour which will help you to implement your own RabbitMQ Topic Consumers.
   Implements your consume function that will be use as a callback when a message arrives.
   """
 
@@ -18,7 +18,7 @@ defmodule Conejo.TopicConsumer do
   defmacro __using__(_) do
     quote location: :keep do
       use Conejo.Channel
-      @behaviour Conejo.TopicConsumer
+      @behaviour Conejo.Consumer
 
       def declare_queue(chan, queue, options) do
         AMQP.Queue.declare(chan, queue, options)

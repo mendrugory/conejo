@@ -3,9 +3,6 @@
 Conejo is a library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to define your
 publisher and consumers in an easier way.
 
-Currently, only TopicConsumers are supported, although you could 
-create your own consumers using the behaviour [Conejo.Channel](https://github.com/mendrugory/conejo/blob/master/lib/conejo/channel.ex).
-
 I highly recommend to initiate you publishers/consumers under a Supervisor.
 
 ## Installation
@@ -53,7 +50,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
      
   ```elixir
   defmodule MyApplication.MyConsumer do
-    use Conejo.TopicConsumer
+    use Conejo.Consumer
 
     def consume(_channel, _tag, _redelivered, payload) do
       IO.puts "Received  ->  #{inspect payload}"
