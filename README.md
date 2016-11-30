@@ -1,7 +1,7 @@
 # Conejo
 
 Conejo is a library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to define your
-publishers and consumers in an easier way.
+AMQP/RabbitMQ publishers and consumers in an easier way.
 
 I highly recommend to initiate your publishers/consumers under a Supervisor.
 
@@ -13,7 +13,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 
     ```elixir
     def deps do
-      [{:conejo, "~> 0.1.0"}]
+       [{:conejo, git: "https://github.com/mendrugory/conejo.git"}]  # or [{:conejo, "~> 0.1.0"}] when is available
     end
     ```
 

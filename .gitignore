@@ -5,6 +5,7 @@ erl_crash.dump
 *.ez
 
 /config/dev.exs
+mix.lock
 
 conejo.iml
 .idea
