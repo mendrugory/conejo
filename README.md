@@ -44,6 +44,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
      username: "user",
      password: "pass"
    ```
+   [Confex](https://github.com/Nebo15/confex) is supported.
    
   4. Define and run your Consumers. Code the function consume(channel, tag, redelivered, payload)
    which will be executed when a message is received.

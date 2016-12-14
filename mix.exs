@@ -13,7 +13,7 @@ defmodule Conejo.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :amqp_client, :amqp],
+    [applications: [:logger, :amqp_client, :amqp, :confex],
      mod: {Conejo, []}]
   end
 
@@ -25,7 +25,8 @@ defmodule Conejo.Mixfile do
 
   defp deps do
     [{:amqp_client, git: "https://github.com/mendrugory/amqp_client.git", branch: "erlang_otp_19", override: true},
-    {:amqp, "~> 0.1.5"}]
+    {:amqp, "~> 0.1.5"},
+    {:confex, ">= 0.0.0"}]
   end
 
  defp package do

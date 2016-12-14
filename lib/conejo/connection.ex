@@ -27,10 +27,10 @@ defmodule Conejo.Connection do
   end
 
   defp create_url do
-    host = Application.get_env(:conejo, :host)
-    port = Application.get_env(:conejo, :port)
-    user = Application.get_env(:conejo, :username)
-    password = Application.get_env(:conejo, :password)
+    host = confex.get(:conejo, :host)
+    port = confex.get(:conejo, :port)
+    user = confex.get(:conejo, :username)
+    password = confex.get(:conejo, :password)
     "amqp://#{user}:#{password}@#{host}:#{port}"
   end
 
@@ -39,7 +39,7 @@ defmodule Conejo.Connection do
     {:ok, conn} ->
       # Get notifications when the connection goes down
       Process.link(Map.get(conn, :pid))
-      Logger.info("Connected to RabbitMQ #{Application.get_env(:conejo, :host)}")
+      Logger.info("Connected to RabbitMQ #{confex.get(:conejo, :host)}")
       {:ok, conn}
     {:error, message} ->
       Logger.error("Error Message during Connection: #{ inspect message}")
