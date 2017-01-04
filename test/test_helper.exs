@@ -1,5 +1,4 @@
 require Logger
-Application.stop(:conejo)
 
 cmds =
   [
@@ -8,23 +7,14 @@ cmds =
     {"docker", ["run", "-d", "-p", "15672:15672", "-p", "5672:5672", "--name", "rabbitmq", "rabbitmq:3-management"]}
   ]
 
-Enum.each(cmds, fn {cmd, args} -> System.cmd(cmd, args) end)
+#Enum.each(cmds, fn {cmd, args} -> System.cmd(cmd, args) end)
 
-Logger.info "Waiting for RabbitMQ ..."
-Process.sleep(10000)
+Logger.info "Waiting for RabbitMQ Broker (Docker Container) ..."
+#Process.sleep(10000)
 
+Application.ensure_all_started(:conejo)
 Logger.info "Conejo Tests begin ..."
-Application.start(:conejo)
-Process.sleep(4000)
-
-defmodule MyConsumer do
-  use Conejo.Consumer
-
-  def consume(_channel, _tag, _redelivered, payload) do
-    IO.puts "Received  ->  #{inspect payload}"
-    send(:test_process, payload)
-  end
-end
+Process.sleep(100)
 
 defmodule MyPublisher do
   use Conejo.Publisher

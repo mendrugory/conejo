@@ -79,4 +79,9 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   MyApplication.MyPublisher.async_publish(:publisher, "my_exchange", "example", "Adios")
   ```
   
+  6. Run the tests. You have to have docker installed in you computer.
+  ```bash
+  mix test --no-start
+  ```
+  
   

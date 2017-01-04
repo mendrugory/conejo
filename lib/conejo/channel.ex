@@ -39,6 +39,7 @@ defmodule Conejo.Channel do
       end
 
       def init(args) do
+        Logger.info("Waiting #{@time_sleep} ms in order to be sure that the Connection to RabbitMQ is done.")
         Process.send_after(self(), :connect, @time_sleep)
         {:ok, %{chan: nil, rabbitmq_options: Enum.into(args, %{})}}
       end
