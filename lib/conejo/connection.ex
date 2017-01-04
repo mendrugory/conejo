@@ -1,6 +1,7 @@
 defmodule Conejo.Connection do
   use GenServer
   use AMQP
+  use Confex
   require Logger
   @moduledoc """
   Conejo.Connection will be the module which will be in control of the unique connection to RabbitMQ
@@ -27,10 +28,10 @@ defmodule Conejo.Connection do
   end
 
   defp create_url do
-    host = confex.get(:conejo, :host)
-    port = confex.get(:conejo, :port)
-    user = confex.get(:conejo, :username)
-    password = confex.get(:conejo, :password)
+    host = Confex.get(:conejo, :host)
+    port = Confex.get(:conejo, :port)
+    user = Confex.get(:conejo, :username)
+    password = Confex.get(:conejo, :password)
     "amqp://#{user}:#{password}@#{host}:#{port}"
   end
 
@@ -39,7 +40,7 @@ defmodule Conejo.Connection do
     {:ok, conn} ->
       # Get notifications when the connection goes down
       Process.link(Map.get(conn, :pid))
-      Logger.info("Connected to RabbitMQ #{confex.get(:conejo, :host)}")
+      Logger.info("Connected to RabbitMQ #{Confex.get(:conejo, :host)}")
       {:ok, conn}
     {:error, message} ->
       Logger.error("Error Message during Connection: #{ inspect message}")
