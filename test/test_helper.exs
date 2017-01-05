@@ -10,7 +10,7 @@ cmds =
 Enum.each(cmds, fn {cmd, args} -> System.cmd(cmd, args) end)
 
 Logger.info "Waiting for RabbitMQ Broker (Docker Container) ..."
-Process.sleep(10000)
+Process.sleep(5_000)
 
 Application.ensure_all_started(:conejo)
 Logger.info "Conejo Tests begin ..."
@@ -19,5 +19,9 @@ Process.sleep(100)
 defmodule MyPublisher do
   use Conejo.Publisher
 end
+
+options = Application.get_all_env(:conejo)[:publisher]
+{:ok, publisher} = MyPublisher.start_link(options, [name: :publisher])
+Process.sleep(1_000)
 
 ExUnit.start()

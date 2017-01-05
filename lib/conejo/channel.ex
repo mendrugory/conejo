@@ -32,7 +32,7 @@ defmodule Conejo.Channel do
       require Logger
       require Conejo.Connection
 
-      @time_sleep 4_000  # wait time for conejo connection
+      @time_sleep 200  # wait time for conejo connection
 
       def start_link(state, opts) do
         GenServer.start_link(__MODULE__, state, opts)
@@ -95,17 +95,22 @@ defmodule Conejo.Channel do
 
       defp connect_channel(options) do
         try do
-          {:ok, conn} = Conejo.Connection.get_connection()
-          {:ok, chan} = AMQP.Channel.open(conn)
-          Process.monitor(:conejo_connection)
-          Process.link(Map.get(chan, :pid))
-          queue = options[:queue_name]
-          declare_exchange(chan, Map.get(options, :exchange, "exchange"), Map.get(options, :exchange_type, "topic"))
-          declare_queue(chan, queue, Map.get(options, :queue_declaration_options, []))
-          bind_queue(chan, queue, Map.get(options, :exchange, "exchange"), Map.get(options, :queue_bind_options, []))
-          {:ok, _consumer_tag} = consume_data(chan, queue, Map.get(options, :consume_options, []))
-          Logger.info("Channel connected #{inspect self()}")
-          chan
+          case Conejo.Connection.new_channel() do
+            {:ok, chan} ->
+               Process.monitor(:conejo_connection)
+               Process.link(Map.get(chan, :pid))
+               queue = options[:queue_name]
+               declare_exchange(chan, Map.get(options, :exchange, "exchange"), Map.get(options, :exchange_type, "topic"))
+               declare_queue(chan, queue, Map.get(options, :queue_declaration_options, []))
+               bind_queue(chan, queue, Map.get(options, :exchange, "exchange"), Map.get(options, :queue_bind_options, []))
+               {:ok, _consumer_tag} = consume_data(chan, queue, Map.get(options, :consume_options, []))
+               Logger.info("Channel connected #{inspect self()}")
+               chan
+            {:error, error} ->
+              Logger.error("Error Opening the channel. #{inspect error}")
+              Process.sleep(@time_sleep)
+              connect_channel(options)
+          end
         rescue
           e ->
             Logger.error("No channel connection. #{inspect e}")

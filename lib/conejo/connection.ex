@@ -16,15 +16,14 @@ defmodule Conejo.Connection do
   end
 
   def init(_initial_state) do
-    conn = rabbitmq_connect()
-    {:ok, conn}
+    {:ok, rabbitmq_connect()}
   end
 
   @doc """
   It returns the pid of the rabbitmq connection
   """
-  def get_connection() do
-    GenServer.call(@name, :get_connection)
+  def new_channel() do
+    GenServer.call(@name, :new_channel)
   end
 
   defp create_url do
@@ -35,28 +34,55 @@ defmodule Conejo.Connection do
     "amqp://#{user}:#{password}@#{host}:#{port}"
   end
 
-  defp rabbitmq_connect do
+  defp rabbitmq_connect() do
     case  create_url() |> Connection.open() do
-    {:ok, conn} ->
-      # Get notifications when the connection goes down
-      Process.link(Map.get(conn, :pid))
-      Logger.info("Connected to RabbitMQ #{Confex.get(:conejo, :host)}")
-      {:ok, conn}
-    {:error, message} ->
-      Logger.error("Error Message during Connection: #{ inspect message}")
-      # Reconnection loop
-      :timer.sleep(@reconnection_time)
-      Logger.info("Reconnecting ...")
-      rabbitmq_connect
+      {:ok, conn} ->
+        # Get notifications when the connection goes down
+        Process.link(Map.get(conn, :pid))
+        Logger.info("Connected to RabbitMQ #{Confex.get(:conejo, :host)}")
+        conn
+      {:error, message} ->
+        Logger.error("Error Message during Connection: #{ inspect message}")
+        # Reconnection loop
+        Process.sleep(@reconnection_time)
+        Logger.info("Reconnecting ...")
+        rabbitmq_connect()
     end
   end
 
-  def handle_call(:get_connection, _from, state) do
-    {:reply, state, state}
+  def handle_call(:new_channel, _from, conn) do
+    result = case AMQP.Channel.open(conn) do
+      {:ok, channel} -> {:ok, channel}
+      error -> {:error, error}
+    end
+    {:reply, result, conn}
   end
 
-  def handle_info(_msg, state) do
+  def handle_info(msg, state) do
     {:noreply, state}
   end
 
 end
+
+
+"""
+
+defmodule MyApplication.MyConsumer do
+  use Conejo.Consumer
+
+  def consume(_channel, _tag, _redelivered, payload) do
+    IO.inspect payload
+  end
+end
+options = Application.get_all_env(:conejo)[:consumer]
+{:ok, consumer1} = MyApplication.MyConsumer.start_link(options, [name: :consumer1])
+
+defmodule MyApplication.MyPublisher do
+  use Conejo.Publisher
+
+end
+
+{:ok, publisher} = MyApplication.MyPublisher.start_link([], [name: :publisher])
+
+MyApplication.MyPublisher.sync_publish(:publisher, "amq.topic", "example", "Hola")
+"""
