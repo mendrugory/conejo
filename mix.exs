@@ -13,7 +13,7 @@ defmodule Conejo.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :amqp_client, :amqp, :confex],
+    [extra_applications: [:logger],
      mod: {Conejo, []}]
   end
 
