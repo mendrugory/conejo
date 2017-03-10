@@ -10,6 +10,7 @@ defmodule Conejo.Channel do
   @type redelivered :: any
   @type payload :: any
   @type options :: any
+  @type params :: any
   @type exchange :: String.t
   @type exchange_type :: String.t
   @type queue :: AMQP.Queue
@@ -18,7 +19,7 @@ defmodule Conejo.Channel do
   @callback declare_exchange(channel, exchange, exchange_type) :: any
   @callback bind_queue(channel, queue, exchange, options) :: any
   @callback consume_data(channel, queue, boolean) :: {:ok, String.t}
-  @callback do_consume(channel, String.t, boolean, any) :: any
+  @callback do_consume(channel, payload, params) :: any
   @callback async_publish(any, exchange, String.t, payload) :: any
   @callback sync_publish(any, exchange, String.t, payload) :: any
 
@@ -74,8 +75,8 @@ defmodule Conejo.Channel do
         {:noreply, chan}
       end
 
-      def handle_info({:basic_deliver, payload, %{delivery_tag: tag, redelivered: redelivered}}, chan) do
-        Task.start(fn -> do_consume(chan, tag, redelivered, payload) end)
+      def handle_info({:basic_deliver, payload, params}, chan) do
+        Task.start(fn -> do_consume(chan, payload, params) end)
         {:noreply, chan}
       end
 

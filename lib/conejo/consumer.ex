@@ -12,8 +12,9 @@ defmodule Conejo.Consumer do
   @type tag :: any
   @type redelivered :: any
   @type payload :: any
+  @type params :: any
 
-  @callback consume(channel, tag, redelivered, payload) :: any
+  @callback consume(channel, payload, params) :: any
 
   defmacro __using__(_) do
     quote location: :keep do
@@ -36,8 +37,8 @@ defmodule Conejo.Consumer do
         AMQP.Basic.consume(chan, queue, nil, options)
       end
 
-      def do_consume(channel, tag, redelivered, payload) do
-        consume(channel, tag, redelivered, payload)
+      def do_consume(channel, payload, params) do
+        consume(channel, payload, params)
       end
 
       def async_publish(publisher, exchange, topic, message) do

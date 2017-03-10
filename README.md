@@ -53,7 +53,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   defmodule MyApplication.MyConsumer do
     use Conejo.Consumer
 
-    def consume(_channel, _tag, _redelivered, payload) do
+    def consume(_channel, payload, _params) do
       IO.puts "Received  ->  #{inspect payload}"
     end
   end

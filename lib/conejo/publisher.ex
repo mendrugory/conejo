@@ -11,23 +11,23 @@ defmodule Conejo.Publisher do
       use Conejo.Channel
       @behaviour Conejo.Publisher
 
-      def declare_queue(chan, queue, options) do
+      def declare_queue(_chan, _queue, _options) do
         nil
       end
 
-      def declare_exchange(chan, exchange, exchange_type) do
+      def declare_exchange(_chan, _exchange, _exchange_type) do
         nil #AMQP.Exchange.declare(chan, exchange, exchange_type)
       end
 
-      def bind_queue(chan, queue, exchange, options) do
+      def bind_queue(_chan, _queue, _exchange, _options) do
         nil
       end
 
-      def consume_data(chan, queue, no_ack) do
+      def consume_data(_chan, _queue, _no_ack) do
         {:ok, nil}
       end
 
-      def do_consume(channel, tag, redelivered, payload) do
+      def do_consume(_channel, _payload, _params) do
         nil
       end
 
