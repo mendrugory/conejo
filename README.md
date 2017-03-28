@@ -1,6 +1,6 @@
 # Conejo
 
-[![Build Status](https://travis-ci.org/mendrugory/conejo.svg?branch=master)](https://travis-ci.org/mendrugory/conejo) [![Hex.pm Downloads](https://img.shields.io/hexpm/dw/conejo.svg?maxAge=3600)]
+[![Build Status](https://travis-ci.org/mendrugory/conejo.svg?branch=master)](https://travis-ci.org/mendrugory/conejo) ![Hex.pm Downloads](https://img.shields.io/hexpm/dw/conejo.svg?maxAge=3600)
 
 Conejo is an OTP application/library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to define your
 AMQP/RabbitMQ publishers and consumers in an easier way.
