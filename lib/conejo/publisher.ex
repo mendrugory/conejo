@@ -1,8 +1,28 @@
 defmodule Conejo.Publisher do
 
   @moduledoc """
-  Conejo.Publisher is the behaviour which will help you to implement your own RabbitMQ Publisher.
-  Implements your consume function that will be use as a callback when a message arrives.
+  `Conejo.Publisher` is the behaviour which will help you to implement your own RabbitMQ Publisher.
+
+  ### Definition
+  ```elixir
+  defmodule MyApplication.MyPublisher do
+    use Conejo.Publisher
+  end
+  ```
+  ### Start Up
+  ```elixir
+  {:ok, publisher} = MyApplication.MyPublisher.start_link([], [name: :publisher])
+  ```
+
+  ### Synchronous Publishing
+  ```elixir
+  MyApplication.MyPublisher.sync_publish(:publisher, "my_exchange", "example", "Hola")
+  ```
+
+  ### Asynchronous Publishing
+  ```elixir
+  MyApplication.MyPublisher.async_publish(:publisher, "my_exchange", "example", "Adios")
+  ```
   """
 
 

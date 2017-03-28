@@ -23,7 +23,7 @@ defmodule Conejo.Mixfile do
 
   defp description do
     """
-    Conejo is a library based on pma/amqp which will help you to define your AMQP/RabbitMQ publishers and consumers in an easier way.
+    Conejo is an OTP application/library which will help you to define your AMQP/RabbitMQ publishers and consumers in an easier way.
     """
   end
 

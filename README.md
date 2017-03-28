@@ -1,31 +1,23 @@
 # Conejo
 
-Conejo is a library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to define your
+[![Build Status](https://travis-ci.org/mendrugory/conejo.svg?branch=master)](https://travis-ci.org/mendrugory/conejo) [![Hex.pm Downloads](https://img.shields.io/hexpm/dw/conejo.svg?maxAge=3600)]
+
+Conejo is an OTP application/library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to define your
 AMQP/RabbitMQ publishers and consumers in an easier way.
 
 I highly recommend to initiate your publishers/consumers under a Supervisor.
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
-
-  1. Add `conejo` to your list of dependencies in `mix.exs`:
+  * Add `conejo` to your list of dependencies in `mix.exs`:
 
     ```elixir
     def deps do
-       [{:conejo, git: "https://github.com/mendrugory/conejo.git"}]  # or [{:conejo, "~> 0.1.0"}] when is available
-    end
-    ```
-
-  2. Ensure `conejo` is started before your application:
-
-    ```elixir
-    def application do
-      [applications: [:conejo]]
+       [{:conejo, "~> 0.2.0"}]
     end
     ```
     
-  3. Define your config files. Try to respect this configuration. It is based
+## Configuration    
+  * Define your config files. Try to respect this configuration. It is based
    on the options that are needed by [pma/amqp](https://github.com/pma/amqp/).
    
    ```elixir
@@ -45,7 +37,8 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
      password: "pass"
    ```
    [Confex](https://github.com/Nebo15/confex) is supported.
-   
+
+## Consumer
   4. Define and run your Consumers. Code the function handle_consume(channel, tag, redelivered, payload)
    which will be executed when a message is received.
      
@@ -62,7 +55,8 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   {:ok, consumer} = MyApplication.MyConsumer.start_link(options, [name: :consumer])
   ```
   
-  5. Define and run your Publisher.
+## Publisher
+  * Define and run your Publisher.
      
   ```elixir
   defmodule MyApplication.MyPublisher do
@@ -79,7 +73,8 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   MyApplication.MyPublisher.async_publish(:publisher, "my_exchange", "example", "Adios")
   ```
   
-  6. Run the tests. You have to have docker installed in you computer.
+## Test
+  * Run the tests. You have to have (Docker)[https://www.docker.com/] installed in you computer.
   ```bash
   mix test --no-start
   ```

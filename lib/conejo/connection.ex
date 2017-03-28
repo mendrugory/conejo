@@ -1,27 +1,33 @@
 defmodule Conejo.Connection do
+  @moduledoc """
+  `Conejo.Connection` will be in control of the unique connection to RabbitMQ (AMQP Broker).
+  """
   use GenServer
   use AMQP
   use Confex
   require Logger
-  @moduledoc """
-  Conejo.Connection will be the module which will be in control of the unique connection to RabbitMQ
-  """
+
 
   @reconnection_time 10_000  # millis
   @name :conejo_connection
 
+  @doc """
+  It starts (linked) a new `Conejo.Connection`
+  """
   def start_link(_state, opts) do
     Logger.info("Conejo Connection begins ...")
     GenServer.start_link(__MODULE__, %{}, opts ++ [name: @name])
   end
 
+  @doc false
   def init(_initial_state) do
     {:ok, rabbitmq_connect()}
   end
 
   @doc """
-  It returns the pid of the rabbitmq connection
+  It creates a new channel
   """
+  @spec new_channel() :: {:ok, AMQP.Channel} | {:error, String.t}
   def new_channel() do
     GenServer.call(@name, :new_channel)
   end
@@ -42,7 +48,7 @@ defmodule Conejo.Connection do
         Logger.info("Connected to RabbitMQ #{Confex.get(:conejo, :host)}")
         conn
       {:error, message} ->
-        Logger.error("Error Message during Connection: #{ inspect message}")
+        Logger.error("Error Message during Connection: #{inspect message}")
         # Reconnection loop
         Process.sleep(@reconnection_time)
         Logger.info("Reconnecting ...")
@@ -63,26 +69,3 @@ defmodule Conejo.Connection do
   end
 
 end
-
-
-"""
-
-defmodule MyApplication.MyConsumer do
-  use Conejo.Consumer
-
-  def consume(_channel, _tag, _redelivered, payload) do
-    IO.inspect payload
-  end
-end
-options = Application.get_all_env(:conejo)[:consumer]
-{:ok, consumer1} = MyApplication.MyConsumer.start_link(options, [name: :consumer1])
-
-defmodule MyApplication.MyPublisher do
-  use Conejo.Publisher
-
-end
-
-{:ok, publisher} = MyApplication.MyPublisher.start_link([], [name: :publisher])
-
-MyApplication.MyPublisher.sync_publish(:publisher, "amq.topic", "example", "Hola")
-"""

@@ -1,7 +1,9 @@
 defmodule Conejo.Channel do
 
   @moduledoc """
-  Conejo.Channel is the behaviour which will help you to implement your own RabbitMQ Channels.
+  `Conejo.Channel` is the behaviour which will help you to implement your own RabbitMQ Channels.
+
+  This behaviour is a low level module. I recommend to use `Conejo.Consumer`or `Conejo.Publisher` for your applications.
   """
 
   @type data :: any
@@ -10,17 +12,38 @@ defmodule Conejo.Channel do
   @type redelivered :: any
   @type payload :: any
   @type options :: any
-  @type params :: any
+  @type params :: %{}
   @type exchange :: String.t
   @type exchange_type :: String.t
   @type queue :: AMQP.Queue
 
+  @doc """
+  It declares a queue
+  """
   @callback declare_queue(channel, queue, options) :: any
+  @doc """
+  It declares an exchange
+  """
   @callback declare_exchange(channel, exchange, exchange_type) :: any
+  @doc """
+  It binds to a queue
+  """
   @callback bind_queue(channel, queue, exchange, options) :: any
+  @doc """
+  The channel starts to consume data
+  """
   @callback consume_data(channel, queue, boolean) :: {:ok, String.t}
+  @doc """
+  Callback called when a message is received
+  """
   @callback do_consume(channel, payload, params) :: any
+  @doc """
+  It publishes data asynchronously
+  """
   @callback async_publish(any, exchange, String.t, payload) :: any
+  @doc """
+  It publishes data synchronously
+  """
   @callback sync_publish(any, exchange, String.t, payload) :: any
 
 
