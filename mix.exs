@@ -1,15 +1,19 @@
 defmodule Conejo.Mixfile do
   use Mix.Project
 
+  @version "0.1.1"
+
   def project do
     [app: :conejo,
-     version: "0.1.0",
+     version: @version,
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
      package: package(),
-     deps: deps()]
+     deps: deps(),
+     docs: [main: "Conejo", source_ref: "v#{@version}",
+     source_url: "https://github.com/mendrugory/conejo"]]
   end
 
   def application do
@@ -24,15 +28,15 @@ defmodule Conejo.Mixfile do
   end
 
   defp deps do
-    [{:amqp_client, git: "https://github.com/mendrugory/amqp_client.git", branch: "erlang_otp_19", override: true},
-    {:amqp, "~> 0.1.5"},
-    {:confex, ">= 0.0.0"}]
+    [{:amqp, "~> 0.2.0"},
+    {:confex, ">= 0.0.0"},
+    {:earmark, ">= 0.0.0", only: :dev},
+    {:ex_doc, ">= 0.0.0", only: :dev}]
   end
 
  defp package do
     [name: :conejo,
-     files: ["lib", "mix.exs", "README*", "LICENSE*"],
-     maintainers: ["Gonzalo Jiménez"],
+     maintainers: ["Gonzalo Jiménez Fuentes"],
      licenses: ["MIT License"],
      links: %{"GitHub" => "https://github.com/mendrugory/conejo"}]
   end

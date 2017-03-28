@@ -1,18 +1,30 @@
 defmodule Conejo do
   use Application
 
-  # See http://elixir-lang.org/docs/stable/elixir/Application.html
-  # for more information on OTP Applications
+  @moduledoc"""
+  Conejo is an OTP application which will help you to define and keep up your AMQP/RabbitMQ consumers and publishers (or producers).
+  This application is based on (pma/amqp)[https://github.com/pma/amqp] library.
+
+  Before your app is started, Conejo will connect to the chosen broker establishing a supervised connection. In order to get it, Conejo
+  needs the following configuration in the config files:
+
+  ```elixir
+  config :conejo,
+    host: "my_host",
+    port: 5672,
+    username: "user",
+    password: "pass"
+  ```
+
+  """
+
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
-    # Define workers and child supervisors to be supervised
     children = [
       worker(Conejo.Connection, [[],[]]),
     ]
 
-    # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Conejo.Supervisor]
     Supervisor.start_link(children, opts)
   end
