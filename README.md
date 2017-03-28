@@ -74,7 +74,7 @@ I highly recommend to initiate your publishers/consumers under a Supervisor.
   ```
   
 ## Test
-  * Run the tests. You have to have (Docker)[https://www.docker.com/] installed in you computer.
+  * Run the tests. You have to have [Docker](https://www.docker.com) installed in you computer.
   ```bash
   mix test --no-start
   ```
