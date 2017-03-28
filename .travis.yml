@@ -2,9 +2,17 @@ language: elixir
 elixir:
   - 1.4.0
 sudo: false
+env:
+  TRAVISCICONEJO=true
 notifications:
   recipients:
     - mendrugory@gmail.com
 otp_release:
   - 19.0
+services:
+  - docker
+before_install:
+- docker pull rabbitmq:3-management
+- docker run -d -p 127.0.0.1:5672:5672 --name rabbitmq rabbitmq:3-management
+- docker ps -a
 script: mix test --no-start --trace
