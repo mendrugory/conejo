@@ -14,7 +14,7 @@ defmodule Conejo.Consumer do
   @type payload :: any
   @type params :: any
 
-  @callback consume(channel, payload, params) :: any
+  @callback handle_consume(channel, payload, params) :: any
 
   defmacro __using__(_) do
     quote location: :keep do
@@ -38,7 +38,7 @@ defmodule Conejo.Consumer do
       end
 
       def do_consume(channel, payload, params) do
-        consume(channel, payload, params)
+        handle_consume(channel, payload, params)
       end
 
       def async_publish(publisher, exchange, topic, message) do

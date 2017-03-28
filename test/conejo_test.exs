@@ -22,7 +22,7 @@ defmodule ConejoTest do
     defmodule ConsumerReceiveMessageTest do
       use Conejo.Consumer
 
-      def consume(_channel, payload, params) do
+      def handle_consume(_channel, payload, params) do
         Logger.info("Received Payload  ->  #{inspect payload}. \n Params: #{inspect params}")
         send(:test_received_message, payload)
       end

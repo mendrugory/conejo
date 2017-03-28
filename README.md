@@ -46,14 +46,14 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
    ```
    [Confex](https://github.com/Nebo15/confex) is supported.
    
-  4. Define and run your Consumers. Code the function consume(channel, tag, redelivered, payload)
+  4. Define and run your Consumers. Code the function handle_consume(channel, tag, redelivered, payload)
    which will be executed when a message is received.
      
   ```elixir
   defmodule MyApplication.MyConsumer do
     use Conejo.Consumer
 
-    def consume(_channel, payload, _params) do
+    def handle_consume(_channel, payload, _params) do
       IO.puts "Received  ->  #{inspect payload}"
     end
   end
