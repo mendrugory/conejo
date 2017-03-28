@@ -1,6 +1,6 @@
 # Conejo
 
-[![hex.pm](https://img.shields.io/hexpm/v/conejo.svg?style=flat-square)](https://hex.pm/packages/conejo)[![hexdocs.pm](https://img.shields.io/badge/docs-latest-green.svg?style=flat-square)](https://hexdocs.pm/conejo/)[![Build Status](https://travis-ci.org/mendrugory/conejo.svg?branch=master)](https://travis-ci.org/mendrugory/conejo)
+[![hex.pm](https://img.shields.io/hexpm/v/conejo.svg?style=flat-square)](https://hex.pm/packages/conejo) [![hexdocs.pm](https://img.shields.io/badge/docs-latest-green.svg?style=flat-square)](https://hexdocs.pm/conejo/) [![Build Status](https://travis-ci.org/mendrugory/conejo.svg?branch=master)](https://travis-ci.org/mendrugory/conejo)
 
 Conejo is an OTP application/library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to define your
 AMQP/RabbitMQ publishers and consumers in an easier way.
