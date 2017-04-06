@@ -39,7 +39,7 @@ I highly recommend to initiate your publishers/consumers under a Supervisor.
    [Confex](https://github.com/Nebo15/confex) is supported.
 
 ## Consumer
-  4. Define and run your Consumers. Code the function handle_consume(channel, tag, redelivered, payload)
+  * Define and run your Consumers. Code the function handle_consume(channel, tag, redelivered, payload)
    which will be executed when a message is received.
      
   ```elixir
