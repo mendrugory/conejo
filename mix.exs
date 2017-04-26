@@ -1,7 +1,7 @@
 defmodule Conejo.Mixfile do
   use Mix.Project
 
-  @version "0.2.0"
+  @version "0.3.0"
 
   def project do
     [app: :conejo,
@@ -28,7 +28,7 @@ defmodule Conejo.Mixfile do
   end
 
   defp deps do
-    [{:amqp, "~> 0.2.0"},
+    [{:amqp, "~> 0.2.1"},
     {:confex, ">= 0.0.0"},
     {:earmark, ">= 0.0.0", only: :dev},
     {:ex_doc, ">= 0.0.0", only: :dev}]

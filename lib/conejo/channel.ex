@@ -65,7 +65,9 @@ defmodule Conejo.Channel do
       def init(args) do
         Logger.info("Waiting #{@time_sleep} ms in order to be sure that the Connection to RabbitMQ is done.")
         Process.send_after(self(), :connect, @time_sleep)
-        {:ok, %{chan: nil, rabbitmq_options: Enum.into(args, %{})}}
+        IO.inspect args
+        rabbitmq_options = if args == nil or Enum.empty?(args), do: %{}, else: Enum.into(args, %{})
+        {:ok, %{chan: nil, rabbitmq_options: rabbitmq_options}}
       end
 
       def handle_cast({:publish, exchange, topic, message}, chan) do

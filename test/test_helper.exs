@@ -22,8 +22,7 @@ defmodule MyPublisher do
   use Conejo.Publisher
 end
 
-options = Application.get_all_env(:conejo)[:publisher]
-{:ok, publisher} = MyPublisher.start_link(options, [name: :publisher])
+{:ok, _publisher} = MyPublisher.start_link([], [name: :publisher])
 Process.sleep(1_000)
 
 ExUnit.start()
