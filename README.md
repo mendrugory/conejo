@@ -1,6 +1,6 @@
 # Conejo
 
-[![Build Status](https://travis-ci.org/mendrugory/conejo.svg?branch=master)](https://travis-ci.org/mendrugory/conejo) ![Hex.pm Downloads](https://img.shields.io/hexpm/dw/conejo.svg?maxAge=3600)
+[![hex.pm](https://img.shields.io/hexpm/v/conejo.svg?style=flat-square)](https://hex.pm/packages/conejo) [![hexdocs.pm](https://img.shields.io/badge/docs-latest-green.svg?style=flat-square)](https://hexdocs.pm/conejo/) [![Build Status](https://travis-ci.org/mendrugory/conejo.svg?branch=master)](https://travis-ci.org/mendrugory/conejo)
 
 Conejo is an OTP application/library based on [pma/amqp](https://github.com/pma/amqp/) which will help you to define your
 AMQP/RabbitMQ publishers and consumers in an easier way.
@@ -39,7 +39,7 @@ I highly recommend to initiate your publishers/consumers under a Supervisor.
    [Confex](https://github.com/Nebo15/confex) is supported.
 
 ## Consumer
-  4. Define and run your Consumers. Code the function handle_consume(channel, tag, redelivered, payload)
+  * Define and run your Consumers. Code the function handle_consume(channel, tag, redelivered, payload)
    which will be executed when a message is received.
      
   ```elixir
