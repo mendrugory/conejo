@@ -11,4 +11,4 @@ mix.lock
 conejo.iml
 .idea
 *.tar
-
+.elixir_ls
