@@ -4,7 +4,6 @@ defmodule Conejo.Connection do
   """
   use GenServer
   use AMQP
-  use Confex
   require Logger
 
 
