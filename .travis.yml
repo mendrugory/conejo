@@ -1,6 +1,6 @@
 language: elixir
 elixir:
-  - 1.4.0
+  - 1.5.0
 sudo: false
 env:
   TRAVISCICONEJO=true
@@ -8,7 +8,7 @@ notifications:
   recipients:
     - mendrugory@gmail.com
 otp_release:
-  - 19.0
+  - 20.0
 services:
   - docker
 before_install:
