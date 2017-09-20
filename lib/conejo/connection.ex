@@ -37,7 +37,8 @@ defmodule Conejo.Connection do
     port = Confex.get_env(:conejo, :port)
     user = Confex.get_env(:conejo, :username)
     password = Confex.get_env(:conejo, :password)
-    "amqp://#{user}:#{password}@#{host}:#{port}"
+    vhost = "/" || Confex.get_env(:conejo, :vhost)
+    "amqp://#{user}:#{password}@#{host}:#{port}#{vhost}"
   end
 
   defp rabbitmq_connect() do
