@@ -13,6 +13,7 @@ defmodule Conejo do
   config :conejo,
     host: "my_host",
     port: 5672,
+    vhost: "/",
     username: "user",
     password: "pass"
   ```
