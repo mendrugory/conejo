@@ -12,7 +12,7 @@ I highly recommend to initiate your publishers/consumers under a Supervisor.
 
     ```elixir
     def deps do
-       [{:conejo, "~> 0.3.3"}]
+       [{:conejo, "~> 0.3.4"}]
     end
     ```
     
