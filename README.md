@@ -33,6 +33,7 @@ I highly recommend to initiate your publishers/consumers under a Supervisor.
    config :conejo, 
      host: "my_host",
      port: 5672,
+     vhost: "/",
      username: "user",
      password: "pass"
    ```
