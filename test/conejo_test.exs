@@ -42,4 +42,10 @@ defmodule ConejoTest do
   end
 
 
+  test "send async message to vhost" do
+    Application.put_env(:conejo, :vhost, "dev")
+    assert :ok == MyPublisher.async_publish(:publisher, "amq.topic", "example", "send async message"), "Send async message failed."
+  end
+
+
 end

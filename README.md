@@ -19,6 +19,7 @@ I highly recommend to initiate your publishers/consumers under a Supervisor.
 ## Configuration    
   * Define your config files. Try to respect this configuration. It is based
    on the options that are needed by [pma/amqp](https://github.com/pma/amqp/).
+  * If you whish to use a virtual host, you can specify an optional parameter called "vhost" containing your wanted vhost (eg. "dev").
    
    ```elixir
    config :my_application, :consumer,
@@ -33,7 +34,7 @@ I highly recommend to initiate your publishers/consumers under a Supervisor.
    config :conejo, 
      host: "my_host",
      port: 5672,
-     vhost: "/",
+     vhost: "dev",
      username: "user",
      password: "pass"
    ```
