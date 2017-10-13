@@ -12,17 +12,17 @@ unless System.get_env "TRAVISCICONEJO" do
   
   Logger.info "Waiting for RabbitMQ Broker (Docker Container) ..."
   Process.sleep(9_000)
-
-  setup_cmds = 
-  [
-    {"docker", ["exec", "rabbitmq", "su", "rabbitmq", "--", "/usr/lib/rabbitmq/bin/rabbitmqctl", "add_vhost", "dev"]},
-    {"docker", ["exec", "rabbitmq", "su", "rabbitmq", "--", "/usr/lib/rabbitmq/bin/rabbitmqctl", "set_permissions", "-p", "dev", "guest", ".*", ".*", ".*"]}
-  ]
-  
-  Logger.info "Setting up RabbitMQ Broker (Docker Container) ..."
-  Enum.each(setup_cmds, fn {cmd, args} -> System.cmd(cmd, args) end)
-  Process.sleep(1_000)
 end
+
+setup_cmds = 
+[
+  {"docker", ["exec", "rabbitmq", "su", "rabbitmq", "--", "/usr/lib/rabbitmq/bin/rabbitmqctl", "add_vhost", "dev"]},
+  {"docker", ["exec", "rabbitmq", "su", "rabbitmq", "--", "/usr/lib/rabbitmq/bin/rabbitmqctl", "set_permissions", "-p", "dev", "guest", ".*", ".*", ".*"]}
+]
+
+Logger.info "Setting up RabbitMQ Broker (Docker Container) ..."
+Enum.each(setup_cmds, fn {cmd, args} -> System.cmd(cmd, args) end)
+Process.sleep(1_000)
 
 Application.ensure_all_started(:conejo)
 Logger.info "Conejo Tests begin ..."
