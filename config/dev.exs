@@ -14,7 +14,6 @@ config :conejo, :consumer,
  queue_bind_options: [routing_key: "example"],
  consume_options: [no_ack: true]
 
-
 config :conejo, :publisher,
  exchange: "amq.topic",
  exchange_type: "topic"
