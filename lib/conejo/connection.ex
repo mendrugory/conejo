@@ -37,11 +37,19 @@ defmodule Conejo.Connection do
     port = Confex.get_env(:conejo, :port)
     user = Confex.get_env(:conejo, :username)
     password = Confex.get_env(:conejo, :password)
-    "amqp://#{user}:#{password}@#{host}:#{port}"
+    
+    vhost = case Confex.fetch_env(:conejo, :vhost) do
+      {:ok, custom_vhost} -> "/#{custom_vhost}"
+      {:ok, "/"} -> ""
+      :error -> ""
+      _ -> ""
+    end
+
+    "amqp://#{user}:#{password}@#{host}:#{port}#{vhost}"
   end
 
   defp rabbitmq_connect() do
-    case  create_url() |> Connection.open() do
+    case create_url() |> Connection.open() do
       {:ok, conn} ->
         # Get notifications when the connection goes down
         Process.link(Map.get(conn, :pid))
