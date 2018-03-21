@@ -8,7 +8,7 @@ notifications:
   recipients:
     - mendrugory@gmail.com
 otp_release:
-  - 20.3
+  - 20.2
 services:
   - docker
 before_install:
