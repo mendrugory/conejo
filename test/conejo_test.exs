@@ -38,7 +38,7 @@ defmodule ConejoTest do
     MyPublisher.async_publish(:publisher, Keyword.get(options, :exchange), Keyword.get(options, :routing_key3), message)
 
     Logger.info("Waiting for the async message ...")
-    assert_receive(message, 1_000)
+    assert_receive(_message, 1_000)
   end
 
 

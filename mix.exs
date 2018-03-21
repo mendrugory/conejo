@@ -1,19 +1,24 @@
 defmodule Conejo.Mixfile do
   use Mix.Project
 
-  @version "0.3.3"
+  @version "0.4.0"
 
   def project do
     [app: :conejo,
      version: @version,
-     elixir: "~> 1.5",
+     elixir: "~> 1.6",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      description: description(),
      package: package(),
      deps: deps(),
-     docs: [main: "Conejo", source_ref: "v#{@version}",
-     source_url: "https://github.com/mendrugory/conejo"]]
+     docs: [
+       main: "readme", 
+       source_ref: "v#{@version}",
+       source_url: "https://github.com/mendrugory/conejo",
+       extras: ["README.md"],
+     ]
+    ]
   end
 
   def application do
@@ -28,7 +33,7 @@ defmodule Conejo.Mixfile do
   end
 
   defp deps do
-    [{:amqp, "~> 0.2.1"},
+    [{:amqp, "~> 1.0"},
     {:confex, "~> 3.2.0"},
     {:earmark, ">= 0.0.0", only: :dev},
     {:ex_doc, ">= 0.0.0", only: :dev}]
