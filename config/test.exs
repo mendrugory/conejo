@@ -45,7 +45,7 @@ config :conejo, :consumer5,
   queue_bind_options: [routing_key: "example5"],
   consume_options: [no_ack: false]
 
-  config :conejo, :publisher6,
+config :conejo, :publisher6,
   exchange: "amq.topic",
   exchange_type: "topic",
   routing_key: "example6"
@@ -56,4 +56,4 @@ config :conejo, :consumer6,
   queue_name: "my_queue_6",
   queue_declaration_options: [{:auto_delete, true}, {:exclusive, true}],
   queue_bind_options: [routing_key: "example6"],
-  consume_options: [no_ack: false]  
+  consume_options: [no_ack: false]

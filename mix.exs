@@ -8,6 +8,7 @@ defmodule Conejo.Mixfile do
       app: :conejo,
       version: @version,
       elixir: "~> 1.6",
+      elixirc_paths: elixirc_paths(Mix.env),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       description: description(),
@@ -49,4 +50,7 @@ defmodule Conejo.Mixfile do
       links: %{"GitHub" => "https://github.com/mendrugory/conejo"}
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib","test"] 
+  defp elixirc_paths(_), do: ["lib"] 
 end

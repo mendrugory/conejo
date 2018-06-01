@@ -22,17 +22,6 @@ defmodule ConejoTest do
     Logger.info("* Receive message test #{inspect(self())}")
     Process.register(self(), :test_received_message)
 
-    defmodule ConsumerReceiveMessageTest do
-      use Conejo.Consumer
-
-      def handle_consume(_channel, payload, params) do
-        Logger.info("Received Payload  ->  #{inspect(payload)}. \n Params: #{inspect(params)}")
-        send(:test_received_message, payload)
-      end
-    end
-
-    c_options3 = Application.get_all_env(:conejo)[:consumer3]
-    {:ok, _consumer} = ConsumerReceiveMessageTest.start_link(c_options3, name: :consumer3)
     p_options3 = Application.get_all_env(:conejo)[:publisher3]
     message = "Hola"
 

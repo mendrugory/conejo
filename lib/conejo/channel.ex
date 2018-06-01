@@ -114,7 +114,7 @@ defmodule Conejo.Channel do
       end
 
       def handle_info({:DOWN, _, :process, _pid, reason}, state) do
-        Logger.info(
+        Logger.error(
           "Conejo Connection has died (:DOWN), therefore I have to die as well. Reason: #{
             inspect(reason)
           }"

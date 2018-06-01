@@ -66,9 +66,22 @@ defmodule MyPublisher do
   use Conejo.Publisher
 end
 
-Logger.info("Number of Schedulers: #{System.schedulers_online}")
+Logger.info("Number of Schedulers: #{System.schedulers_online()}")
 
 {:ok, _publisher} = MyPublisher.start_link([], name: :publisher)
+
+c_options3 = Application.get_all_env(:conejo)[:consumer3]
+{:ok, _consumer} = ConsumerReceiveMessageTest.start_link(c_options3, name: :consumer3)
+
+c_options = Application.get_all_env(:conejo)[:consumer5]
+{:ok, _consumer} = ConsumerRejectTest.start_link(c_options, name: :consumer5)
+
+c_options = Application.get_all_env(:conejo)[:consumer6]
+{:ok, _consumer} = ConsumerNackNoRequeue.start_link(c_options, name: :consumer6)
+
+c_options = Application.get_all_env(:conejo)[:consumer4]
+{:ok, _consumer} = Consumer4nacks1ackTest.start_link(c_options, name: :consumer4)
+
 Process.sleep(1_000)
 
-ExUnit.start(max_cases: 8)
+ExUnit.start()

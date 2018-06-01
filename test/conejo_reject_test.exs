@@ -6,18 +6,6 @@ defmodule ConejoRejectTest do
     Logger.info("* Reject test #{inspect(self())}")
     Process.register(self(), :test_reject)
 
-    defmodule ConsumerRejectTest do
-      use Conejo.Consumer
-
-      def handle_consume(_channel, payload, params) do
-        Logger.info("Received Payload  ->  #{inspect(payload)}. \n Params: #{inspect(params)}")
-        send(:test_reject, payload)
-        :reject
-      end
-    end
-
-    c_options = Application.get_all_env(:conejo)[:consumer5]
-    {:ok, _consumer} = ConsumerRejectTest.start_link(c_options, name: :consumer5)
     p_options = Application.get_all_env(:conejo)[:publisher5]
     message = "Hola"
     Process.sleep(1_000)
