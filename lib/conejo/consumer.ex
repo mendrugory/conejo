@@ -1,6 +1,4 @@
 defmodule Conejo.Consumer do
-
-
   @moduledoc """
   `Conejo.Consumer` is the behaviour which will help you to implement your own RabbitMQ consumers.
 
@@ -40,14 +38,36 @@ defmodule Conejo.Consumer do
   @type channel :: AMQP.Channel
   @type payload :: any
   @type params :: %{}
+  @type ack_opts :: [multiple: boolean]
+  @type nack_opts :: [multiple: boolean, requeue: boolean]
+  @type reject_opts :: [requeue: boolean]
 
   @doc """
-  It will be executed after a message is received.
+  It will be executed after a message is received in an independant process.
 
   * **payload**: The received message.
   * **params**: All the available parameters related to the received message.
+
+  It has to return: 
+  * If there is acknowledge:
+    * `:ack` 
+    * `{:ack, ack_opts}` 
+    * `:nack`
+    * `{:nack, nack_opts}`
+    * `:reject` 
+    * `{:reject, reject_opts}` 
+    where the options are Keyword lists like : _[multiple: boolean, requeue: boolean]_
+  * If there is no acknowledge: 
+    * Any other value
   """
-  @callback handle_consume(channel, payload, params) :: any
+  @callback handle_consume(channel, payload, params) ::
+              :ack
+              | {:ack, ack_opts}
+              | :nack
+              | {:nack, nack_opts}
+              | :reject
+              | {:reject, reject_opts}
+              | any
 
   defmacro __using__(_) do
     quote location: :keep do
@@ -67,11 +87,26 @@ defmodule Conejo.Consumer do
       end
 
       def consume_data(chan, queue, options) do
-        AMQP.Basic.consume(chan, queue, nil, options)
+        a = AMQP.Basic.consume(chan, queue, nil, options)
       end
 
       def do_consume(channel, payload, params) do
-        handle_consume(channel, payload, params)
+        case handle_consume(channel, payload, params) do
+          :ack ->
+            AMQP.Basic.ack(channel, params.delivery_tag)
+
+          {:ack, ack_opts} ->
+            AMQP.Basic.ack(channel, params.delivery_tag, ack_opts)
+
+          :nack ->
+            AMQP.Basic.nack(channel, params.delivery_tag)
+
+          {:nack, nack_opts} ->
+            AMQP.Basic.nack(channel, params.delivery_tag, nack_opts)
+
+          _ ->
+            :ok
+        end
       end
 
       def async_publish(publisher, exchange, topic, message) do
@@ -81,7 +116,6 @@ defmodule Conejo.Consumer do
       def sync_publish(publisher, exchange, topic, message) do
         nil
       end
-
     end
   end
 end

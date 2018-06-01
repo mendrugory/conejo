@@ -1,7 +1,7 @@
 defmodule Conejo do
   use Application
 
-  @moduledoc"""
+  @moduledoc """
   `Conejo` is an OTP application/library which will help you to define and keep up your AMQP/RabbitMQ consumers and publishers (or producers).
 
   This application is based on (pma/amqp)[https://github.com/pma/amqp] library.
@@ -19,7 +19,7 @@ defmodule Conejo do
   ```
 
   If you whish to use a virtual host, you can specify an optional parameter called "vhost" containing your wanted vhost (eg. "dev").
-  
+
   check `Conejo.Consumer` in order to know the its configuration.
 
   `Conejo.Publisher` does not need any configuration.
@@ -30,7 +30,7 @@ defmodule Conejo do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker(Conejo.Connection, [[],[]]),
+      worker(Conejo.Connection, [[], []])
     ]
 
     opts = [strategy: :one_for_one, name: Conejo.Supervisor]

@@ -1,5 +1,4 @@
 defmodule Conejo.Channel do
-
   @moduledoc """
   `Conejo.Channel` is the behaviour which will help you to implement your own RabbitMQ Channels.
 
@@ -13,8 +12,8 @@ defmodule Conejo.Channel do
   @type payload :: any
   @type options :: any
   @type params :: %{}
-  @type exchange :: String.t
-  @type exchange_type :: String.t
+  @type exchange :: String.t()
+  @type exchange_type :: String.t()
   @type queue :: AMQP.Queue
 
   @doc """
@@ -32,7 +31,7 @@ defmodule Conejo.Channel do
   @doc """
   The channel starts to consume data
   """
-  @callback consume_data(channel, queue, boolean) :: {:ok, String.t}
+  @callback consume_data(channel, queue, boolean) :: {:ok, String.t()}
   @doc """
   Callback called when a message is received
   """
@@ -40,13 +39,11 @@ defmodule Conejo.Channel do
   @doc """
   It publishes data asynchronously
   """
-  @callback async_publish(any, exchange, String.t, payload) :: any
+  @callback async_publish(any, exchange, String.t(), payload) :: any
   @doc """
   It publishes data synchronously
   """
-  @callback sync_publish(any, exchange, String.t, payload) :: any
-
-
+  @callback sync_publish(any, exchange, String.t(), payload) :: any
 
   defmacro __using__(_) do
     quote location: :keep do
@@ -56,16 +53,23 @@ defmodule Conejo.Channel do
       require Logger
       require Conejo.Connection
 
-      @time_sleep 200  # wait time for conejo connection
+      # wait time for conejo connection
+      @time_sleep 200
 
       def start_link(state, opts) do
         GenServer.start_link(__MODULE__, state, opts)
       end
 
       def init(args) do
-        Logger.info("Waiting #{@time_sleep} ms in order to be sure that the Connection to RabbitMQ is done.")
+        Logger.info(
+          "Waiting #{@time_sleep} ms in order to be sure that the Connection to RabbitMQ is done."
+        )
+
         Process.send_after(self(), :connect, @time_sleep)
-        rabbitmq_options = if args == nil or Enum.empty?(args), do: %{}, else: Enum.into(args, %{})
+
+        rabbitmq_options =
+          if args == nil or Enum.empty?(args), do: %{}, else: Enum.into(args, %{})
+
         {:ok, %{chan: nil, rabbitmq_options: rabbitmq_options}}
       end
 
@@ -110,7 +114,12 @@ defmodule Conejo.Channel do
       end
 
       def handle_info({:DOWN, _, :process, _pid, reason}, state) do
-        Logger.info("Conejo Connection has died (:DOWN), therefore I have to die as well. Reason: #{inspect reason}")
+        Logger.info(
+          "Conejo Connection has died (:DOWN), therefore I have to die as well. Reason: #{
+            inspect(reason)
+          }"
+        )
+
         Process.exit(self(), :kill)
       end
 
@@ -122,28 +131,43 @@ defmodule Conejo.Channel do
         try do
           case Conejo.Connection.new_channel() do
             {:ok, chan} ->
-               Process.monitor(:conejo_connection)
-               Process.link(Map.get(chan, :pid))
-               queue = options[:queue_name]
-               declare_exchange(chan, Map.get(options, :exchange, "exchange"), Map.get(options, :exchange_type, "topic"))
-               declare_queue(chan, queue, Map.get(options, :queue_declaration_options, []))
-               bind_queue(chan, queue, Map.get(options, :exchange, "exchange"), Map.get(options, :queue_bind_options, []))
-               {:ok, _consumer_tag} = consume_data(chan, queue, Map.get(options, :consume_options, []))
-               Logger.info("Channel connected #{inspect self()}")
-               chan
+              Process.monitor(:conejo_connection)
+              Process.link(Map.get(chan, :pid))
+              queue = options[:queue_name]
+
+              declare_exchange(
+                chan,
+                Map.get(options, :exchange, "exchange"),
+                Map.get(options, :exchange_type, "topic")
+              )
+
+              declare_queue(chan, queue, Map.get(options, :queue_declaration_options, []))
+
+              bind_queue(
+                chan,
+                queue,
+                Map.get(options, :exchange, "exchange"),
+                Map.get(options, :queue_bind_options, [])
+              )
+
+              {:ok, _consumer_tag} =
+                consume_data(chan, queue, Map.get(options, :consume_options, []))
+
+              Logger.info("Channel connected #{inspect(self())}")
+              chan
+
             {:error, error} ->
-              Logger.error("Error Opening the channel. #{inspect error}")
+              Logger.error("Error Opening the channel. #{inspect(error)}")
               Process.sleep(@time_sleep)
               connect_channel(options)
           end
         rescue
           e ->
-            Logger.error("No channel connection. #{inspect e}")
+            Logger.error("No channel connection. #{inspect(e)}")
             Process.sleep(@time_sleep)
             connect_channel(options)
         end
       end
-
     end
   end
 end

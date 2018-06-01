@@ -1,5 +1,4 @@
 defmodule Conejo.Publisher do
-
   @moduledoc """
   `Conejo.Publisher` is the behaviour which will help you to implement your own RabbitMQ Publisher.
 
@@ -25,7 +24,6 @@ defmodule Conejo.Publisher do
   ```
   """
 
-
   defmacro __using__(_) do
     quote location: :keep do
       use Conejo.Channel
@@ -36,7 +34,8 @@ defmodule Conejo.Publisher do
       end
 
       def declare_exchange(_chan, _exchange, _exchange_type) do
-        nil #AMQP.Exchange.declare(chan, exchange, exchange_type)
+        # AMQP.Exchange.declare(chan, exchange, exchange_type)
+        nil
       end
 
       def bind_queue(_chan, _queue, _exchange, _options) do
@@ -58,7 +57,6 @@ defmodule Conejo.Publisher do
       def sync_publish(publisher, exchange, topic, message) do
         GenServer.call(publisher, {:publish, exchange, topic, message})
       end
-
     end
   end
 end
