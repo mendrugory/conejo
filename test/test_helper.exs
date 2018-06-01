@@ -71,4 +71,4 @@ Logger.info("Number of Schedulers: #{System.schedulers_online}")
 {:ok, _publisher} = MyPublisher.start_link([], name: :publisher)
 Process.sleep(1_000)
 
-ExUnit.start()
+ExUnit.start(max_cases: 8)
