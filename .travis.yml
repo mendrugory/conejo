@@ -2,6 +2,7 @@ language: elixir
 elixir:
   - 1.6
 sudo: false
+cache: false
 env:
   TRAVISCICONEJO=true
 notifications:

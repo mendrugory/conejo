@@ -66,6 +66,8 @@ defmodule MyPublisher do
   use Conejo.Publisher
 end
 
+Logger.info("Number of Schedulers: #{System.schedulers_online}")
+
 {:ok, _publisher} = MyPublisher.start_link([], name: :publisher)
 Process.sleep(1_000)
 

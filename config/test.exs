@@ -1,8 +1,5 @@
 use Mix.Config
 
-config :lager,
-  handlers: [level: :info]
-
 config :conejo,
   host: "127.0.0.1",
   port: 5672,
