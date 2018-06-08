@@ -4,6 +4,7 @@
 /doc
 erl_crash.dump
 *.ez
+/log
 
 /config/dev.secret.exs
 mix.lock

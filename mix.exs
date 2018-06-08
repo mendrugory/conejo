@@ -1,24 +1,30 @@
 defmodule Conejo.Mixfile do
   use Mix.Project
 
-  @version "0.3.4"
+  @version "0.5.0"
 
   def project do
-    [app: :conejo,
-     version: @version,
-     elixir: "~> 1.5",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     description: description(),
-     package: package(),
-     deps: deps(),
-     docs: [main: "Conejo", source_ref: "v#{@version}",
-     source_url: "https://github.com/mendrugory/conejo"]]
+    [
+      app: :conejo,
+      version: @version,
+      elixir: "~> 1.6",
+      elixirc_paths: elixirc_paths(Mix.env),
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
+      description: description(),
+      package: package(),
+      deps: deps(),
+      docs: [
+        main: "readme",
+        source_ref: "v#{@version}",
+        source_url: "https://github.com/mendrugory/conejo",
+        extras: ["README.md"]
+      ]
+    ]
   end
 
   def application do
-    [extra_applications: [:logger],
-     mod: {Conejo, []}]
+    [extra_applications: [:logger], mod: {Conejo, []}]
   end
 
   defp description do
@@ -28,16 +34,23 @@ defmodule Conejo.Mixfile do
   end
 
   defp deps do
-    [{:amqp, "~> 0.2.1"},
-    {:confex, "~> 3.2.0"},
-    {:earmark, ">= 0.0.0", only: :dev},
-    {:ex_doc, ">= 0.0.0", only: :dev}]
+    [
+      {:amqp, "~> 1.0.3"},
+      {:confex, "~> 3.2.0"},
+      {:earmark, ">= 0.0.0", only: :dev},
+      {:ex_doc, ">= 0.0.0", only: :dev}
+    ]
   end
 
- defp package do
-    [name: :conejo,
-     maintainers: ["Gonzalo Jiménez Fuentes"],
-     licenses: ["MIT License"],
-     links: %{"GitHub" => "https://github.com/mendrugory/conejo"}]
+  defp package do
+    [
+      name: :conejo,
+      maintainers: ["Gonzalo Jiménez Fuentes"],
+      licenses: ["MIT License"],
+      links: %{"GitHub" => "https://github.com/mendrugory/conejo"}
+    ]
   end
+
+  defp elixirc_paths(:test), do: ["lib","test"] 
+  defp elixirc_paths(_), do: ["lib"] 
 end

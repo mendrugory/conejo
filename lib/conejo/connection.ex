@@ -7,8 +7,8 @@ defmodule Conejo.Connection do
   require Confex
   require Logger
 
-
-  @reconnection_time 10_000  # millis
+  # millis
+  @reconnection_time 10_000
   @name :conejo_connection
 
   @doc """
@@ -27,7 +27,7 @@ defmodule Conejo.Connection do
   @doc """
   It creates a new channel
   """
-  @spec new_channel() :: {:ok, AMQP.Channel} | {:error, String.t}
+  @spec new_channel() :: {:ok, AMQP.Channel} | {:error, String.t()}
   def new_channel() do
     GenServer.call(@name, :new_channel)
   end
@@ -37,13 +37,13 @@ defmodule Conejo.Connection do
     port = Confex.get_env(:conejo, :port)
     user = Confex.get_env(:conejo, :username)
     password = Confex.get_env(:conejo, :password)
-    
-    vhost = case Confex.fetch_env(:conejo, :vhost) do
-      {:ok, custom_vhost} -> "/#{custom_vhost}"
-      {:ok, "/"} -> ""
-      :error -> ""
-      _ -> ""
-    end
+
+    vhost =
+      case Confex.fetch_env(:conejo, :vhost) do
+        {:ok, "/"} -> ""
+        {:ok, custom_vhost} -> "/#{custom_vhost}"
+        _ -> ""
+      end
 
     "amqp://#{user}:#{password}@#{host}:#{port}#{vhost}"
   end
@@ -55,8 +55,9 @@ defmodule Conejo.Connection do
         Process.link(Map.get(conn, :pid))
         Logger.info("Connected to RabbitMQ #{Confex.get_env(:conejo, :host)}")
         conn
+
       {:error, message} ->
-        Logger.error("Error Message during Connection: #{inspect message}")
+        Logger.error("Error Message during Connection: #{inspect(message)}")
         # Reconnection loop
         Process.sleep(@reconnection_time)
         Logger.info("Reconnecting ...")
@@ -65,15 +66,16 @@ defmodule Conejo.Connection do
   end
 
   def handle_call(:new_channel, _from, conn) do
-    result = case AMQP.Channel.open(conn) do
-      {:ok, channel} -> {:ok, channel}
-      error -> {:error, error}
-    end
+    result =
+      case AMQP.Channel.open(conn) do
+        {:ok, channel} -> {:ok, channel}
+        error -> {:error, error}
+      end
+
     {:reply, result, conn}
   end
 
   def handle_info(_msg, state) do
     {:noreply, state}
   end
-
 end

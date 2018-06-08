@@ -12,7 +12,7 @@ I highly recommend to initiate your publishers/consumers under a Supervisor.
 
     ```elixir
     def deps do
-       [{:conejo, "~> 0.3.4"}]
+       [{:conejo, "~> 0.5"}]
     end
     ```
     
@@ -82,3 +82,9 @@ I highly recommend to initiate your publishers/consumers under a Supervisor.
   ```
   
   
+## Internal dependencies
+`Conejo` dependencies use `lager` for logging, so you have to configure it in your configuration files:
+```elixir
+config :lager,
+  handlers: [level: :critical]
+```
