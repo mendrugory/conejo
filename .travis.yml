@@ -1,6 +1,6 @@
 language: elixir
 elixir:
-  - 1.6
+  - 1.7
 sudo: false
 cache: false
 env:
@@ -9,7 +9,7 @@ notifications:
   recipients:
     - mendrugory@gmail.com
 otp_release:
-  - 20.2
+  - 21.0
 services:
   - docker
 before_install:
