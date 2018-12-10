@@ -1,13 +1,13 @@
 defmodule Conejo.Mixfile do
   use Mix.Project
 
-  @version "0.5.0"
+  @version "0.6.0"
 
   def project do
     [
       app: :conejo,
       version: @version,
-      elixir: "~> 1.6",
+      elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -35,7 +35,7 @@ defmodule Conejo.Mixfile do
 
   defp deps do
     [
-      {:amqp, "~> 1.0.3"},
+      {:amqp, "~> 1.1.0"},
       {:confex, "~> 3.2.0"},
       {:earmark, ">= 0.0.0", only: :dev},
       {:ex_doc, ">= 0.0.0", only: :dev}
