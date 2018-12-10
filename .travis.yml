@@ -1,13 +1,13 @@
 language: elixir
 elixir:
-  - 1.7
+  - 1.7.4
 sudo: false
 cache: false
 env:
   TRAVISCICONEJO=true
 notifications:
   recipients:
-    - mendrugory@gmail.com
+    - iam@mendrugory.com
 otp_release:
   - 21.0
 services:
